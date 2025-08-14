@@ -1,7 +1,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { computed, ref } from 'vue'
-import { usePagination } from './usePagination'
+import { usePagination } from '../common/usePagination'
 
 type PubgRecordData = {
   participant: {

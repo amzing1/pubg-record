@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@/components/ui/pagination'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { usePubgRecord } from '@/use/usePubgRecord'
+import { usePubgRecord } from '@/use/pubg/usePubgRecord'
 
 const props = defineProps<{
   userId: string
 }>()
 
-const { records, stat, fetchPubgRecord, currentPage, perPage, onPageChange, paginatedList } = usePubgRecord()
+const { records, stat, isRequesting, fetchPubgRecord, currentPage, perPage, onPageChange, paginatedList } = usePubgRecord()
 
 defineExpose({
+  isRequesting,
   stat,
   fetchPubgRecord: (startDate: string, endDate: string) => {
     fetchPubgRecord(props.userId, '', startDate, endDate)
