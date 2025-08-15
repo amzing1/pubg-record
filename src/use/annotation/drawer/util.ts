@@ -78,4 +78,20 @@ function isPointInsidePolygon(p: Point, segs: Point[]) {
   return intersectionCount % 2 === 1
 }
 
-export { getBBoxByPolygon, isPointInsidePolygon }
+function lowerTransparent(color: string) {
+  let res = ''
+  for (let i = 0; i < color.length; i++) {
+    if (i === color.length - 2) {
+      res += '0.3'
+    } else {
+      res += color[i]
+    }
+  }
+  return res
+}
+
+function clamp(min: number, max: number, val: number) {
+  return Math.min(max, Math.max(min, val))
+}
+
+export { clamp, getBBoxByPolygon, isPointInsidePolygon, lowerTransparent }

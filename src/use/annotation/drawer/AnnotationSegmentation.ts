@@ -12,7 +12,7 @@ export class AnnotationSegmentation extends AnnotationPart {
   shouldDrawPoints: boolean = true
   bbox: BBox = [0, 0, 0, 0]
   skeleton: Skeleton | null = null
-  categroyId: number
+  categroyId: string
   visible: boolean = true
   name: string
   idx: number = 0

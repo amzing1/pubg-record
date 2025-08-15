@@ -8,10 +8,15 @@
 
 <script setup lang="ts">
 import testImg from '@/assets/annotation/test.png'
-import { useDragCanvas, useImageContent, useMouseCursor } from '@/use/annotation'
+import { useDragCanvas, useImageContent, useImageData, useMouseCursor } from '@/use/annotation'
+import { useCreatePolygon } from '@/use/annotation/mouse-operations/useCreatePolygon'
+import { useMovePoint } from '@/use/annotation/mouse-operations/useMovePoint'
 const { mediaRef, mediaCanvasRef, labelCanvasRef, onMediaLoaded } = useImageContent()
+const { addPoint, changePolygon } = useImageData()
 useDragCanvas()
 useMouseCursor()
+useCreatePolygon(addPoint)
+useMovePoint(changePolygon)
 </script>
 
 <style lang="scss">

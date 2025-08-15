@@ -21,7 +21,7 @@ type AnnotationSegmentationParams = {
   isOver: boolean
   id: string
   visible: boolean
-  categroyId: number
+  categroyId: string
   name: string
   isImageLabel: boolean
   actionName?: string
@@ -32,5 +32,12 @@ type SkeletonParams = {
   skeletons: LabelSkeleton[]
   keypoints: LabelKeyPoint[]
 }
+type SetAnnotationsParams = {
+  id: string
+  polygon: [number, number][]
+  keypoints: [number, number][]
+  idx: number
+  originData: any
+}[]
 
-export type { AnnotationPointParams, AnnotationSegmentationParams, BBox, LabelKeyPoint, LabelSkeleton, SkeletonParams }
+export type { AnnotationPointParams, AnnotationSegmentationParams, BBox, LabelKeyPoint, LabelSkeleton, SetAnnotationsParams, SkeletonParams }

@@ -1,5 +1,6 @@
 import { createSharedComposable } from '@vueuse/core'
 import { reactive, ref } from 'vue'
+import { clamp } from './drawer/util'
 
 export const useImageContent = createSharedComposable(() => {
   const canvasPos = reactive({
@@ -110,9 +111,6 @@ export const useImageContent = createSharedComposable(() => {
     requestAnimationFrame(draw)
   }
   function zoom(val: number) {
-    const clamp = (min: number, max: number, val: number) => {
-      return Math.min(max, Math.max(min, val))
-    }
     mediaTransform.scale[0] = clamp(0.2, 20, mediaTransform.scale[0] + val * -0.001)
     mediaTransform.scale[1] = clamp(0.2, 20, mediaTransform.scale[1] + val * -0.001)
     requestAnimationFrame(draw)

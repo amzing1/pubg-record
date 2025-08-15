@@ -4,7 +4,7 @@ import { AnnotationPoint } from './AnnotationPoint'
 import { AnnotationSegmentation } from './AnnotationSegmentation'
 import { Skeleton } from './Skeleton'
 import type { AnnotationPointParams, AnnotationSegmentationParams, BBox, LabelKeyPoint, LabelSkeleton, SkeletonParams } from './type'
-import { getBBoxByPolygon, isPointInsidePolygon } from './util'
+import { getBBoxByPolygon, isPointInsidePolygon, lowerTransparent } from './util'
 
-export { AnnotationDrawer, AnnotationPart, AnnotationPoint, AnnotationSegmentation, getBBoxByPolygon, isPointInsidePolygon, Skeleton }
+export { AnnotationDrawer, AnnotationPart, AnnotationPoint, AnnotationSegmentation, getBBoxByPolygon, isPointInsidePolygon, lowerTransparent, Skeleton }
 export type { AnnotationPointParams, AnnotationSegmentationParams, BBox, LabelKeyPoint, LabelSkeleton, SkeletonParams }
