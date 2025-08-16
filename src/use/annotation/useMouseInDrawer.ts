@@ -11,7 +11,14 @@ import { useDrawer } from './useDrawer'
 import { useImageContent } from './useImageContent'
 
 type MouseOperationMeta = {
-  type: '' | 'move-keypoint' | 'move-point' | 'move' | 'create-bbox' | 'create-polygon' | 'select-action'
+  type:
+    | ''
+    | 'move-keypoint'
+    | 'move-point'
+    | 'move'
+    | 'create-bbox'
+    | 'create-polygon'
+    | 'select-action'
   /** annotations 数组中的索引 */
   annoIdx: number
   /** 当前正在操作的 annotation 的 segmentations 的索引 */
@@ -25,7 +32,11 @@ type MouseOperationMeta = {
 function mouseInDrawer() {
   const { labelCanvasRef, canvasPos, mediaTransform } = useImageContent()
   const { drawer } = useDrawer()
-  const { elementX: ex, elementY: ey, isOutside } = useMouseInElement(labelCanvasRef)
+  const {
+    elementX: ex,
+    elementY: ey,
+    isOutside
+  } = useMouseInElement(labelCanvasRef)
 
   /**鼠标基于图片/视频实际像素的 x 坐标 */
   const x = ref<number>(0)
@@ -69,29 +80,6 @@ function mouseInDrawer() {
     y.value = coord[1]
   })
 
-  /**
-   * 时刻监听鼠标移动动态替换鼠标样式
-   */
-  watchEffect(() => {
-    if (!drawer.value || isOutside.value) return
-    // const { annoIdx, pointIdx, keyPointIdx } = drawer.value.checkMousePoint(x.value, y.value)
-    // mouseMeta.value.annoIdx = annoIdx
-    // mouseMeta.value.keyPointIdx = keyPointIdx || -1
-    // mouseMeta.value.pointIdx = pointIdx
-    // mouseMeta.value.isMouseInAnnotation = annoIdx >= 0
-    // if (keyPointIdx !== undefined) {
-    //   labelCanvasRef.value!.style.cursor = mouseOperationMeta.value.type ? 'grabbing' : 'grab'
-    // } else if (pointIdx === 0) {
-    //   if (drawer.value.curAnno && !drawer.value.curAnno.isOver) {
-    //     labelCanvasRef.value!.style.cursor = 'pointer'
-    //   }
-    // } else if (annoIdx >= 0 && (!drawer.value.curAnno || drawer.value.curAnno.isOver)) {
-    //   labelCanvasRef.value!.style.cursor = mouseOperationMeta.value.type ? 'move' : 'pointer'
-    // } else {
-    //   labelCanvasRef.value!.style.cursor = 'crosshair'
-    // }
-  })
-
   function isMouseInCanvas(x: number, y: number) {
     const { w, h, dx, dy } = canvasPos
     if (x < dx || x > dx + w || y < dy || y > dy + h) {
@@ -102,7 +90,11 @@ function mouseInDrawer() {
   }
   // videoCanvas 和 labelCanvas 可能都经过了 transform，所以需要计算点时需要经过旋转对齐坐标系
   function getMousePos(x: number, y: number) {
-    function rotatePoint(point: [number, number], center: [number, number], angle: number): [number, number] {
+    function rotatePoint(
+      point: [number, number],
+      center: [number, number],
+      angle: number
+    ): [number, number] {
       const dx = point[0] - center[0]
       const dy = point[1] - center[1]
       angle = (angle + 360) % 360
@@ -112,7 +104,11 @@ function mouseInDrawer() {
       const newY = dx * sinAngle + dy * cosAngle + center[1]
       return [newX, newY]
     }
-    function scalePoint(point: [number, number], center: [number, number], scale: [number, number]) {
+    function scalePoint(
+      point: [number, number],
+      center: [number, number],
+      scale: [number, number]
+    ) {
       const dx = (point[0] - center[0]) / scale[0]
       const dy = (point[1] - center[1]) / scale[1]
       const newX = center[0] + dx
@@ -120,11 +116,19 @@ function mouseInDrawer() {
       return [newX, newY]
     }
     const { w, h, dx, dy } = canvasPos
-    const angle = [90, 270].includes(mediaTransform.rotation) ? mediaTransform.rotation - 180 : mediaTransform.rotation
-    const anchor: [number, number] = [dx + w / 2 - mediaTransform.offset[0], dy + h / 2 - mediaTransform.offset[1]]
+    const angle = [90, 270].includes(mediaTransform.rotation)
+      ? mediaTransform.rotation - 180
+      : mediaTransform.rotation
+    const anchor: [number, number] = [
+      dx + w / 2 - mediaTransform.offset[0],
+      dy + h / 2 - mediaTransform.offset[1]
+    ]
     ;[x, y] = rotatePoint([x, y], anchor, angle)
     ;[x, y] = [x - mediaTransform.offset[0], y - mediaTransform.offset[1]]
-    ;[x, y] = scalePoint([x, y], anchor, [mediaTransform.scale[0], mediaTransform.scale[1]])
+    ;[x, y] = scalePoint([x, y], anchor, [
+      mediaTransform.scale[0],
+      mediaTransform.scale[1]
+    ])
     return [x, y]
   }
 
@@ -138,7 +142,10 @@ function mouseInDrawer() {
       return
     }
     drawer.value = drawer.value!
-    const { annoIdx, pointIdx, keyPointIdx } = drawer.value.checkMousePoint(x.value, y.value)
+    const { annoIdx, pointIdx, keyPointIdx } = drawer.value.checkMousePoint(
+      x.value,
+      y.value
+    )
     mouseOperationMeta.value = {
       type: '',
       annoIdx,
@@ -150,9 +157,17 @@ function mouseInDrawer() {
       mouseOperationMeta.value.type = 'select-action'
     } else if (keyPointIdx !== undefined) {
       mouseOperationMeta.value.type = 'move-keypoint'
-    } else if ((!drawer.value!.curAnno || drawer.value!.curAnno.isOver) && annoIdx >= 0 && pointIdx >= 0) {
+    } else if (
+      (!drawer.value!.curAnno || drawer.value!.curAnno.isOver) &&
+      annoIdx >= 0 &&
+      pointIdx >= 0
+    ) {
       mouseOperationMeta.value.type = 'move-point'
-    } else if ((!drawer.value.curAnno || drawer.value.curAnno.isOver) && annoIdx >= 0 && pointIdx === -1) {
+    } else if (
+      (!drawer.value.curAnno || drawer.value.curAnno.isOver) &&
+      annoIdx >= 0 &&
+      pointIdx === -1
+    ) {
       mouseOperationMeta.value.type = 'move'
     } else if (1 === '1') {
       mouseOperationMeta.value.type = 'create-bbox'

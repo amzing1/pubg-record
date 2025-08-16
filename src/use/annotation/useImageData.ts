@@ -35,7 +35,11 @@ export const useImageData = createSharedComposable(() => {
     }
   }
 
-  function changePolygon(drawer: AnnotationDrawer) {}
+  function changePolygon(drawer: AnnotationDrawer) {
+    if (!drawer.curAnno) return
+    const idx = annotations.value.findIndex((v) => v.id === drawer.curAnno!.id)
+    annotations.value[idx].polygon = drawer.curAnno.segmentation
+  }
 
   function deleteAnnotation(idx: number) {
     annotations.value.splice(idx, 1)
