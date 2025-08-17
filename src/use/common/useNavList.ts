@@ -33,11 +33,37 @@ export function useNavList() {
           children: []
         }
       ]
+    },
+    {
+      name: 'web3d',
+      routerName: 'web3d',
+      children: [
+        {
+          name: 'shader-practice',
+          routerName: 'shader-practice',
+          children: []
+        },
+        {
+          name: 'shader-wave',
+          routerName: 'shader-wave',
+          children: []
+        },
+        {
+          name: 'shader-galaxy',
+          routerName: 'shader-galaxy',
+          children: []
+        },
+        {
+          name: 'shader-light',
+          routerName: 'shader-light',
+          children: []
+        }
+      ]
     }
   ])
 
-  function getSubNavs(routeName: 'annotation'): NavItem[] {
-    return navList.value.find((v) => v.name === routeName)!.children
+  function getSubNavs(routeName: 'annotation' | 'web3d'): NavItem[] {
+    return navList.value.find((v) => v.name === routeName)?.children || []
   }
 
   return {

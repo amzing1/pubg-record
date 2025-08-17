@@ -66,7 +66,7 @@ function mouseInDrawer() {
     labelCanvasRef.value.addEventListener('mousedown', onMousedown, true)
   })
   onUnmounted(() => {
-    labelCanvasRef.value!.removeEventListener('mousedown', onMousedown, true)
+    labelCanvasRef.value?.removeEventListener('mousedown', onMousedown, true)
   })
 
   /**

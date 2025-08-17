@@ -8,7 +8,9 @@
         v-for="nav in navList"
         :key="nav.name"
       >
-        <p class="mt-1" @click="router.push({ name: nav.routerName })">{{ nav.name }}</p>
+        <p class="mt-1" @click="router.push({ name: nav.routerName })">
+          {{ nav.name }}
+        </p>
       </div>
     </div>
     <div class="flex-1 overflow-auto my-2 mr-2 bg-white rounded-[8px]">
