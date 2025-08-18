@@ -169,9 +169,11 @@ function mouseInDrawer() {
       pointIdx === -1
     ) {
       mouseOperationMeta.value.type = 'move'
-    } else if (1 === '1') {
-      mouseOperationMeta.value.type = 'create-bbox'
-    } else {
+    }
+    // else if (1 === '1') {
+    //   mouseOperationMeta.value.type = 'create-bbox'
+    // }
+    else {
       mouseOperationMeta.value.type = 'create-polygon'
     }
   }

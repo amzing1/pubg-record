@@ -29,13 +29,18 @@ export function usePubgRecord() {
   const isRequesting = ref(false)
   const records = ref<PubgRecordData[]>([])
 
-  const { currentPage, paginatedList, perPage, onPageChange } = usePagination(records, 1, 10)
+  const { currentPage, paginatedList, perPage, onPageChange } = usePagination(
+    records,
+    1,
+    10
+  )
 
   const stat = computed(() => {
     let damage = 0
     let kills = 0
     if (isRequesting.value)
       return {
+        count: 0,
         damage,
         kills,
         isValid: false
@@ -45,6 +50,7 @@ export function usePubgRecord() {
       kills += v.participant.stats.combat.kda.kills
     })
     return {
+      count: records.value.length,
       damage,
       kills,
       name: records.value[0]?.participant.user.nickname || '',
@@ -52,7 +58,12 @@ export function usePubgRecord() {
     }
   })
 
-  async function fetchPubgRecord(userId: string, offset = '', startDate = '', endDate = '') {
+  async function fetchPubgRecord(
+    userId: string,
+    offset = '',
+    startDate = '',
+    endDate = ''
+  ) {
     const innerFetch = async (iOffset = '') => {
       try {
         isRequesting.value = true
@@ -78,7 +89,13 @@ export function usePubgRecord() {
         }
         const startDay = dayjs(startDate).subtract(8, 'hour')
         const endDay = dayjs(endDate).subtract(8, 'hour')
-        records.value = records.value.concat(resp.data.matches.items).filter((v) => dayjs(v.started_at).isAfter(startDay) && dayjs(v.started_at).isBefore(endDay))
+        records.value = records.value
+          .concat(resp.data.matches.items)
+          .filter(
+            (v) =>
+              dayjs(v.started_at).isAfter(startDay) &&
+              dayjs(v.started_at).isBefore(endDay)
+          )
         if (last.offset && dayjs(last.started_at).isAfter(startDay)) {
           await innerFetch(last.offset)
         }
