@@ -57,6 +57,11 @@ export function useNavList() {
           name: 'shader-light',
           routerName: 'shader-light',
           children: []
+        },
+        {
+          name: 'shader-hologram',
+          routerName: 'shader-hologram',
+          children: []
         }
       ]
     }
