@@ -3,7 +3,7 @@ import vertexShader from '@/shaders/shader-light/vs.glsl?raw'
 import * as THREE from 'three'
 import { initThree } from './util'
 export function main() {
-  const { scene, camera, tick } = initThree()
+  const { scene, camera, tick, renderer } = initThree()
 
   const mat = new THREE.RawShaderMaterial({
     vertexShader,
@@ -24,17 +24,6 @@ export function main() {
 
   scene.add(box, sphere, torus, plane)
   camera.position.set(0, 0, 12)
-
-  // helper
-  const spot = new THREE.SphereGeometry(0.05)
-  const mesh1 = new THREE.Mesh(
-    spot,
-    new THREE.MeshBasicMaterial({
-      color: 'red'
-    })
-  )
-  mesh1.position.set(0, 2.5, 0)
-  scene.add(mesh1)
 
   tick(() => {
     ;[box, sphere, torus].forEach((v) => {

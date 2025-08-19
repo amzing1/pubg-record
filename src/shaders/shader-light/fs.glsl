@@ -1,4 +1,5 @@
 precision mediump float;
+uniform vec3 cameraPosition;
 varying vec3 vPosition;
 varying vec3 vNormal;
 
@@ -17,6 +18,14 @@ vec3 addPointLight(vec3 lightColor, vec3 lightPos, vec3 normal, vec3 vertexPosti
   float attenuation = 1.0 / (0.001 + distance * distance);
   float dotRes = dot(normalize( lightPos - vertexPostion), normal);
   return lightColor * attenuation * max(dotRes, 0.0);
+}
+
+float addSpecular(vec3 lightDir, vec3 position, vec3 normal, float shininess) {
+  vec3 viewDir = normalize(cameraPosition - position);
+  vec3 halfDir = normalize(lightDir + viewDir);
+  float specular = pow(max(dot(normal, halfDir), 0.0), shininess);
+  // return vec3(2.0, 0.0,0.0) * specular;
+  return specular;
 }
 
 vec3 addSpotLight(
@@ -48,8 +57,12 @@ vec3 addSpotLight(
     
     // 漫反射
     float diff = max(dot(normal, lightDirNorm), 0.0);
+
+    // 高光
+    float specular = addSpecular(-lightDir,vPosition,normal, 1024.0);
     
-    return lightColor * diff * intensity;
+    return lightColor * diff * intensity + vec3(4.0) * specular;
+    // return vec3(4.0,0.0,0.0) * specular;
 }
 
 void main() {
@@ -59,14 +72,14 @@ void main() {
   // ambient color
   vColor += addAmbientLight(vec3(1.0), 0.1);
   // dirLight color;
-  vColor += addDirLight(vec3(0.8, 0.8, 0.8), vec3(1, -1, 0), normal);
+  vColor += addDirLight(vec3(0.9, 0.9, 0.9), vec3(1, -1, 0), normal);
   // point color;
   vColor += addPointLight(vec3(0.0, 2.0, 0.0), vec3(3.0, 3.0, 2.0), normal, vPosition);
 
   // 聚光灯参数
   vec3 lightColor = vec3(1.0, 1.0, 1.0); // 白光
-  vec3 lightPos = vec3(0.0, 2.5, 0.0);   // 光源位置
-  vec3 lightDir = vec3(0.0, -1.0, 0.0);  // 照射方向（向下）
+  vec3 lightPos = vec3(2.0, 2.5, 2.0);   // 光源位置
+  vec3 lightDir = vec3(-3, -1.0, -1);  // 照射方向（向下）
   float cutoff = cos(radians(12.0));      // 内切光角（12°）
   float outerCutoff = cos(radians(15.0)); // 外切光角（15°）
   // 计算聚光灯贡献
